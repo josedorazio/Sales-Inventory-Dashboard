@@ -1,0 +1,66 @@
+repos:
+  # General pre-commit hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: detect-private-key
+
+  # Python code formatting and linting
+  - repo: https://github.com/psf/black
+    rev: 25.9.0
+    hooks:
+      - id: black
+        language_version: python3
+        args: ["--line-length", "79"]
+
+  - repo: https://github.com/PyCQA/isort
+    rev: 6.0.1
+    hooks:
+      - id: isort
+
+  - repo: https://github.com/PyCQA/flake8
+    rev: 7.3.0
+    hooks:
+      - id: flake8
+
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.20.0
+    hooks:
+      - id: pyupgrade
+        args: [--py39-plus]
+
+  # SQL linting and formatting
+  - repo: https://github.com/sqlfluff/sqlfluff
+    rev: 3.4.2
+    hooks:
+      - id: sqlfluff-lint
+        additional_dependencies: [regex, sqlfluff==3.4.2]
+      - id: sqlfluff-fix
+        additional_dependencies: [regex, sqlfluff==3.4.2]
+
+  # Jupyter notebooks linting and formatting
+  - repo: https://github.com/nbQA-dev/nbQA
+    rev: 1.9.1
+    hooks:
+      - id: nbqa-black
+        additional_dependencies: [black==25.9.0]
+      - id: nbqa-isort
+        additional_dependencies: [isort==6.0.1]
+      - id: nbqa-flake8
+        additional_dependencies: [flake8==7.3.0]
+
+  # Custom commit message standard enforcement
+  - repo: local
+    hooks:
+      - id: commit-msg-check
+        name: Enforce commit message standard
+        entry: python3 .pre-commit-hooks/commit_msg_check.py
+        language: system
+        stages: [commit-msg]
+
+exclude: ^notebooks/data/|^data/raw/|\.csv$|\.zip$|\.h5$|\.txt$
