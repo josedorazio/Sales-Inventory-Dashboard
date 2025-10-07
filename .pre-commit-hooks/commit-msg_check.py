@@ -2,11 +2,12 @@
 import re
 import sys
 
-# Your commit regex
 pattern = (
-    r"^\[#\d] (feat|fix|docs|style|refactor|test|chore|perf) - .+"
+    r"^\[#\d] (feat|fix|docs|style|refactor|test"
+    r"|chore|perf) -.+"
     r"|^\[fix\] - .+"
 )
+
 
 commit_msg_file = sys.argv[1]
 with open(commit_msg_file) as f:
