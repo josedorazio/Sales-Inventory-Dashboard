@@ -2,11 +2,9 @@
 <!-- Short descriptive title of your PR -->
 
 
-## What
+## [Task-#4](https://github.com/josedorazio/Sales-Inventory-Dashboard/issues/_project_id)
 - Brief description of what changed
 
-## Why
-- Why this change was necessary
 
 ## Checklist
 - [ ] Code follows commit/branch conventions
