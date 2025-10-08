@@ -1,6 +1,4 @@
-# Title
-<!-- Short descriptive title of your PR -->
-
+# Pull Request
 
 ## [Task-#4](https://github.com/josedorazio/Sales-Inventory-Dashboard/issues/_project_id)
 - Brief description of what changed
@@ -21,5 +19,5 @@
 <!-- For UI changes, add visual proof if applicable -->
 
 ## Related Issues
-- Closes #123
-- Relates to #456
+- Closes
+- Relates to
