@@ -7,52 +7,49 @@ repos:
       - id: end-of-file-fixer
       - id: check-yaml
       - id: check-added-large-files
+        args: ['--maxkb=1000']  # Allow files up to 1MB (adjust as needed)
+        exclude: '\.ipynb$'  # Exclude notebooks from size check
       - id: check-merge-conflict
       - id: detect-private-key
 
-  # Python code formatting and linting
-  - repo: https://github.com/psf/black
-    rev: 25.9.0
+  # Modern Python formatter and linter (replaces Black + isort + Flake8)
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.4
     hooks:
-      - id: black
-        language_version: python3
-        args: ["--line-length", "79"]
+      - id: ruff
+        args: [--fix, --line-length=79]
+      - id: ruff-format
+        args: [--line-length=79]
 
-  - repo: https://github.com/PyCQA/isort
-    rev: 6.0.1
-    hooks:
-      - id: isort
-
-  - repo: https://github.com/PyCQA/flake8
-    rev: 7.3.0
-    hooks:
-      - id: flake8
-
+  # Python version upgrader
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.20.0
     hooks:
       - id: pyupgrade
-        args: [--py39-plus]
+        args: [--py310-plus]  # Updated to Python 3.10+
 
   # SQL linting and formatting
   - repo: https://github.com/sqlfluff/sqlfluff
     rev: 3.4.2
     hooks:
       - id: sqlfluff-lint
-        additional_dependencies: [regex, sqlfluff==3.4.2]
+        additional_dependencies: [sqlfluff-templater-dbt]
       - id: sqlfluff-fix
-        additional_dependencies: [regex, sqlfluff==3.4.2]
+        additional_dependencies: [sqlfluff-templater-dbt]
 
-  # Jupyter notebooks linting and formatting
+  # Jupyter notebooks cleaning (removes outputs/metadata)
+  - repo: https://github.com/kynan/nbstripout
+    rev: 0.7.1
+    hooks:
+      - id: nbstripout
+
+  # Jupyter notebooks formatting
   - repo: https://github.com/nbQA-dev/nbQA
     rev: 1.9.1
     hooks:
-      - id: nbqa-black
-        additional_dependencies: [black==25.9.0]
-      - id: nbqa-isort
-        additional_dependencies: [isort==6.0.1]
-      - id: nbqa-flake8
-        additional_dependencies: [flake8==7.3.0]
+      - id: nbqa-ruff
+        args: [--fix, --line-length=79]
+        additional_dependencies: [ruff==0.8.4]
 
   # Custom commit message standard enforcement
   - repo: local
@@ -63,4 +60,5 @@ repos:
         language: system
         stages: [commit-msg]
 
-exclude: ^notebooks/data/|^data/raw/|\.csv$|\.zip$|\.h5$|\.txt$
+# Global excludes
+exclude: ^(notebooks/data/|data/raw/|data/processed/).*\.(csv|zip|h5|txt|parquet)$
